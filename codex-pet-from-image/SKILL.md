@@ -191,6 +191,11 @@ ${CODEX_HOME:-$HOME/.codex}/pets/<pet-id>/
   spritesheet.webp
 ```
 
+## Distribution Note
+
+- Publishing the workflow is fine.
+- Do not bundle third-party character pet packages into a public repo unless the user clearly has redistribution rights for those assets.
+
 ## Fast Execution Pattern
 
 When the user gives one image and says “make this into a Codex pet,” execute in this order:
