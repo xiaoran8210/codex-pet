@@ -1,34 +1,55 @@
 # codex-pet
 
+[中文说明](./README.zh-CN.md)
+
 Turn a single reference image into a usable Codex custom pet, then install it directly into `~/.codex/pets/<pet-id>/`.
 
-This repository packages a reusable Codex skill that handles the full workflow from character image to validated pet atlas.
+This repository packages a reusable Codex skill that turns a character image into a validated, deployable Codex pet atlas.
 
-## What This Skill Does
+## Preview
 
-`codex-pet-from-image/` will:
+### Frieren-style example
+
+![Frieren contact sheet](./docs/assets/frieren-contact-sheet.png)
+
+### Fern-style example
+
+![Fern contact sheet](./docs/assets/fern-contact-sheet.png)
+
+## What This Repository Includes
+
+- `codex-pet-from-image/`
+  A reusable Codex skill for image-to-pet generation
+- `codex-pet-from-image/scripts/`
+  Small helpers for run setup, cutout preparation, cleanup, recording, and install
+- `codex-pet-from-image/references/`
+  Compact notes and a worked example workflow
+
+## What The Skill Does
+
+`codex-pet-from-image` will:
 
 - use one user-provided image as the identity reference
-- generate a clean base character image in the same visual style
+- recreate a clean base character image in the same style
 - remove the background and tighten the cutout
 - enlarge the prepared reference so the character does not end up too small
 - prepare a standard `hatch-pet` run
 - generate all 9 required animation rows with `imagegen`
-- clean chroma-key green from decoded row strips before final packaging
+- clean chroma-key green from decoded row strips before packaging
 - validate the atlas and package it as a Codex pet
 - deploy the finished pet into `~/.codex/pets/<pet-id>/`
 
-## Why This Repo Exists
+## Why This Exists
 
-The built-in pet pipeline is powerful, but the image-to-pet path needs a few practical fixes to feel production-ready:
+The built-in pet pipeline is powerful, but the image-to-pet path usually needs a few practical fixes:
 
 - reference characters often come out too small
 - green chroma backgrounds can leak into intermediate rows
-- some good generations need slot-based extraction instead of component-only extraction
+- some high-quality generations work better with slot-based extraction than component-only extraction
 
-This skill bakes those fixes into one repeatable workflow.
+This repository packages those fixes into one repeatable workflow.
 
-## Install
+## Installation
 
 Copy the skill into your Codex skills directory:
 
@@ -41,13 +62,13 @@ After that, you can call it from any Codex conversation.
 
 ## Quick Start
 
-With a reference image attached, say:
+Attach a reference image and say:
 
 ```text
 Use $codex-pet-from-image to turn this reference image into an installed Codex pet.
 ```
 
-Or:
+Natural-language variants also work, for example:
 
 ```text
 Make this character image into a Codex pet and deploy it to the pet repository.
@@ -55,13 +76,19 @@ Make this character image into a Codex pet and deploy it to the pet repository.
 
 ## Example Workflow
 
-A complete end-to-end example is documented here:
+See the full step-by-step example here:
 
 - [Example Workflow](./codex-pet-from-image/references/example-workflow.md)
 
-It shows what to provide, what the skill generates, what gets validated, and what appears in the final install directory.
+That document shows:
 
-## Repo Layout
+- what kind of reference image to provide
+- how the base cutout is prepared
+- which 9 animation rows are generated
+- how cleanup and validation work
+- what the final install directory looks like
+
+## Repository Layout
 
 ```text
 codex-pet-from-image/
@@ -69,6 +96,8 @@ codex-pet-from-image/
   agents/openai.yaml
   references/
   scripts/
+docs/
+  assets/
 ```
 
 ## Important Defaults
@@ -78,9 +107,18 @@ codex-pet-from-image/
 - decoded row strips are cleaned before final atlas extraction
 - finalization uses `--allow-slot-extraction`
 
-## About Prebuilt Character Pets
+## Output
 
-Technically, this repo could also include ready-to-install pet packages.
-For a public GitHub repository, I recommend not bundling third-party character pets unless you have clear redistribution rights for those assets.
+When a run succeeds, the installed result looks like:
 
-Because of that, this repo currently ships the workflow, not copyrighted character packs.
+```text
+~/.codex/pets/<pet-id>/
+  pet.json
+  spritesheet.webp
+```
+
+## Notes On Redistribution
+
+This repository publishes the workflow and supporting scripts.
+
+It does not bundle third-party character pet packs by default. If you plan to publish generated pet assets, make sure you have the right to redistribute the character art.
