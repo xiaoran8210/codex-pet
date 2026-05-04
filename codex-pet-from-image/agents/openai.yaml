@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Pet From Image"
+  short_description: "Turn one image into a deployed Codex pet"
+  default_prompt: "Use $codex-pet-from-image to turn this reference image into an installed Codex pet."
